@@ -1,5 +1,5 @@
 # OOP
-from assign import Banks,Tellers,Customers,Accounts,Base,Loans,Savings,Checkings,Evidence
+from database_setup import Banks,Tellers,Customers,Accounts,Base,Loans,Savings,Checkings,Evidence
 from sqlalchemy import create_engine
 
 from sqlalchemy.orm import sessionmaker
@@ -7,7 +7,6 @@ engine = create_engine('sqlite:///class.db')
 Base.metadata.bind = engine
 Session = sessionmaker(bind = engine)
 session = Session()
-from random import *
 from datetime import *
 
 
