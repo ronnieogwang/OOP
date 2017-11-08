@@ -1,0 +1,79 @@
+import sys
+import os
+from sqlalchemy import Integer, String, Column, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import relationship
+engine = create_engine('sqlite:///class.db')
+Base = declarative_base()
+
+
+class Banks(Base):
+    __tablename__ = 'banks'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(23),nullable=False )
+    location = Column(String(12), nullable = False)
+
+
+class Customers(Base):
+    __tablename__ = 'customers'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(13))
+    address = Column(String(12))
+    phone_no = Column(Integer)
+    account_no =Column(Integer)
+    bank_id = Column(Integer, ForeignKey('banks.id'))
+    bank = relationship(Banks)
+
+class Tellers(Base):
+    __tablename__ = 'tellers'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(23))
+    bank_id = Column(Integer, ForeignKey('banks.id'))
+    bank = relationship(Banks)
+
+class Accounts(Base):
+    __tablename__ = 'accounts'
+    id = Column(Integer, primary_key=True)
+    customer_id =Column(Integer, ForeignKey('customers.id'))
+    customer = relationship(Customers)
+    amount = Column(Integer)
+
+
+
+class Loans(Base):
+    __tablename__ = 'loans'
+    id = Column(Integer, primary_key=True)
+    loan_type = Column(String(7))
+    loan_amount = Column(Integer)
+    account_no = Column(Integer)
+    customer_id = Column(Integer, ForeignKey('customers.id'))
+    customer = relationship(Customers)
+
+class Checkings(Base):
+    __tablename__ = 'checkings'
+    id = Column(Integer,primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customers.id'))
+    customer = relationship(Customers)
+
+class Savings(Base):
+    __tablename__ = 'savings'
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey('customers.id'))
+    customer = relationship(Customers)
+
+class Evidence(Base):
+    __tablename__ = 'evidence'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(12))
+    reason = Column(String(45))
+    account_no = Column(Integer)
+    security = Column(String(23))
+    amount = Column(Integer)
+    repayment_intervals  = Column(Integer)
+
+
+
+
+
+Base.metadata.create_all(engine)
